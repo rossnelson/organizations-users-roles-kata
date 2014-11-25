@@ -20,5 +20,29 @@ module MountainOfOrgs
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+
+    config.generators do |g|
+
+      # Don't generate resource specific assets
+      g.stylesheets = false
+      g.javascripts = false
+
+      # Don't pollute the helpers directory
+      g.helper = false
+
+      g.test_framework :rspec, 
+        fixtures: true,
+
+        # Considering we are only building out the classes for this exercise
+        # lets ignore these for now.
+        view_specs: false,
+        helper_specs: false,
+        routing_specs: false,
+        controller_specs: false,
+        request_specs: false
+
+      g.fixture_replacement :factory_girl, dir: 'spec/factories'
+    end
+    
   end
 end
