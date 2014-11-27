@@ -1,6 +1,8 @@
 
 ## The Organizations - Users - Roles kata
 
+![Kata: http://www.planoaikido.com/](http://cl.ly/image/0c1T1b1A0K1b/Jo-Kata-14-Strikes-small2.jpg)
+
 We have three layers of organizations: root organization, organizations and child organizations.
 
 There is only one root organization that we call "Root Org".  
