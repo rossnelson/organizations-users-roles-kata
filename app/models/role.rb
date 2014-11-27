@@ -23,8 +23,8 @@ class Role < ActiveRecord::Base
       .pluck(:name)
       .include?(self.name)
 
-        errors.add :name, 
-          'There is an existing role for this user and  organization'
+        errors.add :base, 
+          'There is an existing role for this user and organization'
     end
   end
 

@@ -3,15 +3,15 @@ require 'rails_helper'
 RSpec.describe Role do
 
   context "Validations" do
-    let(:role) { build(:role, :admin) }
 
     describe ".name" do
       it "should not be blank" do
         expect( build(:role, name: nil) ).to be_invalid
       end
 
+      let(:role) { build(:role, name: 'SuperAdmin') }
+
       it "should be a valid option" do
-        role.name = "SuperAdmin"
         expect(role).to be_invalid
         expect(role.errors.messages.keys).to include :name
       end

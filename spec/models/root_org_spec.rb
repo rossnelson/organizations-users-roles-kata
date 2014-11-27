@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe RootOrg do
-  let(:org) { build(:root_org) }
 
   it "should have a valid factory" do
-    expect(org).to be_valid
+    expect(build(:root_org)).to be_valid
   end
 
   it "should have_many organizations" do 
@@ -20,7 +19,7 @@ RSpec.describe RootOrg do
 
       expect(org.organizations).to_not be_blank
       expect(org).to_not be_an Organization
-      expect(org.reload.organizations).to include child
+      expect(org.organizations).to include child
     end
   end
 

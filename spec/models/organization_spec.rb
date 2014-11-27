@@ -4,7 +4,7 @@ RSpec.describe Organization do
   let(:organization) { build(:organization) }
 
   it "should have a valid factory" do
-    expect(organization).to be_valid
+    expect(build(:organization)).to be_valid
   end
 
   it "should belong to a root_org" do 
@@ -13,10 +13,8 @@ RSpec.describe Organization do
   end
 
   describe ".root" do
-    let(:organization) { create(:organization_with_root) }
-
     it "should be an RootOrg" do
-      expect(organization.root_org).to be_an RootOrg
+      expect(build(:organization_with_root).root_org).to be_an RootOrg
     end
   end
 
@@ -24,11 +22,11 @@ RSpec.describe Organization do
     let(:organization) { create(:organization_with_children) }
 
     it "should be a collection of Org::Child objects" do
-      child = ChildOrg.find_by(parent_id: organization.id)
+      child = ChildOrg.order("RANDOM()").find_by(parent_id: organization.id)
 
       expect(organization.child_orgs).to_not be_blank
       expect(child).to be_an ChildOrg
-      expect(organization.reload.child_orgs).to include child
+      expect(organization.child_orgs).to include child
     end
   end
 
