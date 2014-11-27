@@ -66,12 +66,17 @@ RSpec.describe User do
     end
   end
 
+  describe "#accessible_descendants" do
+    it "should return all the descendants of the given org"
+    it "should not return any denied descendants"
+  end
+
   describe "#access_level_for_org" do
     context "given an org it determines a user's access" do
-      #it "should return false when the role is Denied"
-      #it "should return false when there is no role"
-      #it "should return true when there is a role of User or Admin"
-      #it "should return true when there is a role of Admin for any of it's parents"
+      it "should return false when the role is Denied"
+      it "should return false when there is no role"
+      it "should return true when there is a role of User or Admin"
+      it "should return true when there is a role of Admin for any of it's parents"
     end
   end
 
