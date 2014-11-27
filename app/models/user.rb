@@ -5,4 +5,6 @@ class User < ActiveRecord::Base
     presence: true, 
     format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/ }
   validates :password, presence: true, on: :create
+
+  has_many :roles
 end

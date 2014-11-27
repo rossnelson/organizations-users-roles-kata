@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  describe "Validations" do
+  context "Validations" do
     let(:user) { FactoryGirl.build(:user) }
 
     it "should have a valid factory" do
@@ -42,10 +42,11 @@ RSpec.describe User do
     end
   end
 
-  #describe "#roles" do
-    #it "should respond to roles"
-    #it "should return an ActiveRecord::Association"
-    #it "should contain at least one Role object"
-  #end
+  describe "#roles" do
+    it "should return an ActiveRecord::Association" do
+      association = User.reflect_on_association(:roles)
+      expect(association.macro).to eq :has_many
+    end
+  end
 
 end

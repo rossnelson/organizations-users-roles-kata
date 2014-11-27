@@ -7,7 +7,6 @@ RSpec.describe Organization do
     expect(organization).to be_valid
   end
 
-
   it "should belong to a root_org" do 
     association = Organization.reflect_on_association(:root_org)
     expect(association.macro).to eq :belongs_to
