@@ -1,23 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Org do
-  let(:org) { FactoryGirl.build(:org) }
+  
+  let(:org) { build(:org) }
 
-  it "should have a valid factory" do
-    expect(org).to be_valid
-  end
-
-  describe ".root" do
-    it "responds to root" do
-      expect org.root
+  context "Validations" do
+    it "should not allow a blank name" do
+      org.assign_attributes(name: nil)
+      expect(org).to be_invalid
     end
-    it "should be an Org::Root"
-  end
-
-  describe ".children" do
-    it "responds to children"
-    it "should be an ActiveRecord::Association"
   end
 
 end
-
