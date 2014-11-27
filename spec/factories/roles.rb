@@ -7,5 +7,4 @@ FactoryGirl.define do
     trait(:user) { name "User" }
     trait(:denied) { name "Denied" }
   end
-
 end

@@ -11,7 +11,7 @@ RSpec.describe RootOrg do
     expect(association.macro).to eq :has_many
   end
 
-  describe ".organizations" do
+  describe "#organizations" do
     let(:org) { build(:root_org_with_orgs) }
 
     it "should be a CollectionProxy of Organization objects" do
@@ -23,7 +23,7 @@ RSpec.describe RootOrg do
     end
   end
 
-  describe ".tree" do
+  describe "#tree" do
     let(:org) { build(:root_org_with_orgs) }
 
     it "should be and array of organizations" do

@@ -2,6 +2,9 @@ class Role < ActiveRecord::Base
   validates :name, presence: true
   validate :name_is_a_valid_option, :unique_within_a_grouping
 
+  belongs_to :user
+  belongs_to :org
+
   def self.name_options
     ['Admin', 'User', 'Denied']
   end

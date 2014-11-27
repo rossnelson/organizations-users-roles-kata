@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Role do
-
   context "Validations" do
-
-    describe ".name" do
+    describe "#name" do
       it "should not be blank" do
         expect( build(:role, name: nil) ).to be_invalid
       end
@@ -20,8 +18,18 @@ RSpec.describe Role do
         create(:role, :admin)
         expect(build(:role, :admin)).to be_invalid
       end
+    end
+  end
 
+  context "Associations" do
+    it "should belong_to a user" do
+      association = described_class.reflect_on_association(:user)
+      expect(association.macro).to eq :belongs_to
     end
 
+    it "should belong_to a org" do
+      association = described_class.reflect_on_association(:org)
+      expect(association.macro).to eq :belongs_to
+    end
   end
 end

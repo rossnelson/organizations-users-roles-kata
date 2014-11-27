@@ -12,13 +12,13 @@ RSpec.describe Organization do
     expect(association.macro).to eq :belongs_to
   end
 
-  describe ".root" do
+  describe "#root" do
     it "should be an RootOrg" do
       expect(build(:organization_with_root).root_org).to be_an RootOrg
     end
   end
 
-  describe ".children" do
+  describe "#children" do
     let(:organization) { create(:organization_with_children) }
 
     it "should be a collection of Org::Child objects" do
