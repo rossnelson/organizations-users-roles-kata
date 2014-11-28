@@ -3,8 +3,6 @@ class RootOrg < Org
     foreign_key: 'parent_id'
 
   def descendants
-    organizations.to_a.concat(
-      organizations.map(&:child_orgs)
-    ).flatten
+    organizations.map(&:self_and_descendants).flatten
   end
 end
