@@ -1,7 +1,10 @@
 class RootOrg < Org
-  has_many :organizations, foreign_key: 'parent_id'
+  has_many :organizations, -> { eager_load(:child_orgs) },
+    foreign_key: 'parent_id'
 
-  def tree
-    organizations.eager_load(:child_orgs)
+  def descendants
+    organizations.to_a.concat(
+      organizations.map(&:child_orgs)
+    ).flatten
   end
 end

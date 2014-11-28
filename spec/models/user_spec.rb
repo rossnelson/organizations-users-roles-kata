@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User do
 
-  it "should have a valid factory" do
+  it "has a valid factory" do
     expect( build(:user) ).to be_valid
   end
 
@@ -21,11 +21,11 @@ RSpec.describe User do
 
     context "on new users" do
       describe "#password" do
-        it "should be required" do
+        it "is required" do
           expect(build(:user, password: nil)).to be_invalid
         end
 
-        it "should be encrypted" do
+        it "is encrypted" do
           expect user.password_digest
         end
       end
@@ -33,7 +33,7 @@ RSpec.describe User do
 
     context "on existing records" do
       describe "#password" do
-        it "will allow a blank password" do
+        it "allows a blank password" do
           user.password = ""
           expect(user).to be_valid
         end
@@ -42,41 +42,64 @@ RSpec.describe User do
   end
 
   describe "#roles" do
-    it "should have_many roles" do
+    it "has many roles" do
       association = User.reflect_on_association(:roles)
       expect(association.macro).to eq :has_many
     end
   end
 
-  let(:user_tree) { create(:user, :with_roles_and_orgs) }
+  let(:user) { create(:user, :with_roles_and_orgs) }
 
   describe "#orgs" do
-    it "should have_many orgs" do
+    it "has many orgs" do
       association = User.reflect_on_association(:orgs)
       expect(association.macro).to eq :has_many
     end
 
-    it "should not have any denied orgs" do
-      role_ids_without_denied = user_tree.roles
+    it "doesn't contain denied orgs" do
+      role_ids_without_denied = user.roles
         .where('name != ?', "Denied")
         .map(&:org_id)
-      org_ids = user_tree.orgs.map(&:id)
+      org_ids = user.orgs.map(&:id)
 
       expect(role_ids_without_denied).to eq org_ids
     end
   end
 
-  describe "#accessible_descendants" do
-    it "should return all the descendants of the given org"
-    it "should not return any denied descendants"
+  describe "#denied_orgs" do
+    it "has many denied_orgs" do
+      association = User.reflect_on_association(:denied_orgs)
+      expect(association.macro).to eq :has_many
+    end
+
+    it "doesn't contain denied orgs" do
+      role_ids_with_denied = user.roles
+        .where('roles.name == ?', "Denied")
+        .map(&:org_id)
+      org_ids = user.denied_orgs.map(&:id)
+
+      expect(role_ids_with_denied).to eq org_ids
+    end
   end
 
-  describe "#access_level_for_org" do
-    context "given an org it determines a user's access" do
-      it "should return false when the role is Denied"
-      it "should return false when there is no role"
-      it "should return true when there is a role of User or Admin"
-      it "should return true when there is a role of Admin for any of it's parents"
+  describe "#accessible_orgs" do
+    it "returns all the accessible orgs and org descendants" do
+      all_orgs        = user.orgs.map(&:self_and_descendants).flatten
+      accessible_orgs = all_orgs - user.denied_orgs
+
+      expect(user.accessible_orgs).to eq accessible_orgs
+    end
+
+    it "does not contain any denied descendants" do
+      denied_ids = user.roles.where('name == ?', 'Denied').map(&:org_id)
+      expect(denied_ids & user.accessible_orgs.map(&:id)).to eq []
+    end
+  end
+
+  describe "#accessible_org?" do
+    it "is true if the org is within the accessible orgs" do
+      expect( !user.accessible_org?(user.denied_orgs.first) )
+      expect( user.accessible_org?(user.orgs.first) )
     end
   end
 

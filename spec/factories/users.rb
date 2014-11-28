@@ -11,12 +11,10 @@ FactoryGirl.define do
       after(:create) do |user, evaluator|
         create(:root_org_with_orgs)
 
-        evaluator.role_count.times do 
-        user.roles.create!(
-          name: Role.name_options.sample, 
-          org: Org.all.sample
-        )
-        end
+        ids = Org.ids.shuffle
+        create(:role, name: "Admin", user: user, org_id: ids.pop)
+        create(:role, name: "User", user: user, org_id: ids.pop)
+        create(:role, name: "Denied", user: user, org_id: ids.pop)
       end
     end
 

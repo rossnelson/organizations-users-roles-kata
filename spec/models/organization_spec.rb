@@ -3,32 +3,47 @@ require 'rails_helper'
 RSpec.describe Organization do
   let(:organization) { build(:organization) }
 
-  it "should have a valid factory" do
+  it "has a valid factory" do
     expect(build(:organization)).to be_valid
   end
 
-  it "should belong to a root_org" do 
+  it "belongs to a root_org" do 
     association = Organization.reflect_on_association(:root_org)
     expect(association.macro).to eq :belongs_to
   end
 
   describe "#root" do
-    it "should be an RootOrg" do
+    it "is a RootOrg" do
       expect(build(:organization_with_root).root_org).to be_an RootOrg
     end
   end
 
-  describe "#children" do
-    let(:organization) { create(:organization_with_children) }
+  let(:organization) { create(:organization_with_children) }
 
-    it "should be a collection of Org::Child objects" do
-      child = ChildOrg.order("RANDOM()").find_by(parent_id: organization.id)
-
+  describe "#child_orgs" do
+    it "is an array of ChildOrg objects" do
+      expect(organization.child_orgs.map(&:class).uniq).to eq [ChildOrg]
       expect(organization.child_orgs).to_not be_blank
-      expect(child).to be_an ChildOrg
-      expect(organization.child_orgs).to include child
+    end
+    it "does not include the root org" do
+      expect(organization.child_orgs).to_not include(organization.root_org)
     end
   end
 
+  describe "#descendants" do
+    it "is and array of related child orgs" do
+      expect(organization.descendants.map(&:class).uniq).to eq [ChildOrg]
+      expect(organization.descendants).to_not be_blank
+    end
+  end
+
+  describe "#self_and_descendants" do
+    it "is an array containing itself and it's descendants" do
+      expect(organization.self_and_descendants.first).to be organization
+      expect(
+        organization.self_and_descendants.map(&:class).uniq
+      ).to eq [Organization, ChildOrg]
+    end
+  end
 end
 

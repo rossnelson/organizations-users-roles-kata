@@ -2,38 +2,39 @@ require 'rails_helper'
 
 RSpec.describe RootOrg do
 
-  it "should have a valid factory" do
+  it "has a valid factory" do
     expect(build(:root_org)).to be_valid
   end
 
-  it "should have_many organizations" do 
+  it "has many organizations" do 
     association = RootOrg.reflect_on_association(:organizations)
     expect(association.macro).to eq :has_many
   end
 
+  let(:org) { build(:root_org_with_orgs) }
+
   describe "#organizations" do
-    let(:org) { build(:root_org_with_orgs) }
+    it "is an array of Organizations" do
+      expect(org.organizations.map(&:class).uniq).to eq [Organization]
+    end
 
-    it "should be a CollectionProxy of Organization objects" do
-      child = org.organizations.shuffle.first
-
-      expect(org.organizations).to_not be_blank
-      expect(org).to_not be_an Organization
-      expect(org.organizations).to include child
+    it "eager loads the organization's child_orgs" do
+      expect(org.organizations.first.association_cache.keys).to include :child_orgs
     end
   end
 
-  describe "#tree" do
-    let(:org) { build(:root_org_with_orgs) }
-
-    it "should be and array of organizations" do
-      expect(org.tree).to be_an ActiveRecord::AssociationRelation
-    end
-    it "should eager load the organization's child_orgs" do
-      expect(org.tree.first.association_cache.keys).to include :child_orgs
+  describe "#descendants" do
+    it "is an array of the organizations and child_orgs" do
+      expect(org.descendants.map(&:class).uniq).to eq [Organization, ChildOrg]
     end
   end
 
+  describe "#self_and_descendants" do
+    it "is an array containing itself and it's descendants" do
+      expect(org.self_and_descendants.first).to be org
+      expect(
+        org.self_and_descendants.map(&:class).uniq
+      ).to eq [RootOrg, Organization, ChildOrg]
+    end
+  end
 end
-
-

@@ -15,10 +15,10 @@ ActiveRecord::Schema.define(version: 20141126054055) do
 
   create_table "orgs", force: true do |t|
     t.string   "name"
-    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "parent_id"
+    t.string   "type"
   end
 
   create_table "roles", force: true do |t|

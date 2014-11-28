@@ -13,6 +13,12 @@ FactoryGirl.define do
 
   factory :child_org, class: ChildOrg do
     name Faker::Company.name
+
+    trait :with_organization do
+      after(:create) do |child_org, evaluator|
+        child_org.organization = create(:organization)
+      end
+    end
   end
 
   # => Orgs with associations
