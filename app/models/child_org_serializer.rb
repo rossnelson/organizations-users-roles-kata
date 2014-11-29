@@ -1,0 +1,5 @@
+class ChildOrgSerializer < OrgSerializer
+
+end
+
+
