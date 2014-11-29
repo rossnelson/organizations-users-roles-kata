@@ -14,6 +14,8 @@ GEM
       activesupport (= 4.1.8)
       builder (~> 3.1)
       erubis (~> 2.7.0)
+    active_model_serializers (0.9.0)
+      activemodel (>= 3.2)
     activemodel (4.1.8)
       activesupport (= 4.1.8)
       builder (~> 3.1)
@@ -65,6 +67,7 @@ GEM
     minitest (5.4.3)
     multi_json (1.10.1)
     rack (1.5.2)
+    rack-cors (0.2.9)
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.1.8)
@@ -141,6 +144,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   bcrypt
   codeclimate-test-reporter
   coffee-rails (~> 4.0.0)
@@ -148,6 +152,7 @@ DEPENDENCIES
   faker
   jbuilder (~> 2.0)
   jquery-rails
+  rack-cors
   rails (= 4.1.8)
   rspec-rails
   sass-rails (~> 4.0.3)
