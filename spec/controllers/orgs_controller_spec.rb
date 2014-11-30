@@ -4,7 +4,7 @@ RSpec.describe OrgsController, :type => :controller do
 
   describe "GET #index" do
     before :each do
-      create :root_org_with_orgs
+      create :root_org, :with_descendants
       get :index, format: :json
     end
 
