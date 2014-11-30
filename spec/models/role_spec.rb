@@ -32,4 +32,5 @@ RSpec.describe Role do
       expect(association.macro).to eq :belongs_to
     end
   end
+
 end
