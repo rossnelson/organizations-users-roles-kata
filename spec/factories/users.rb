@@ -9,7 +9,7 @@ FactoryGirl.define do
 
     trait :with_roles_and_orgs do
       after(:create) do |user, evaluator|
-        create(:root_org_with_orgs)
+        create(:root_org, :with_descendants)
 
         ids = Org.ids.shuffle
         create(:role, name: "Admin", user: user, org_id: ids.pop)

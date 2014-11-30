@@ -8,13 +8,13 @@ RSpec.describe Organization do
   end
 
   it "belongs to a root_org" do 
-    association = Organization.reflect_on_association(:root_org)
+    association = described_class.reflect_on_association(:root_org)
     expect(association.macro).to eq :belongs_to
   end
 
   describe "#root" do
     it "is a RootOrg" do
-      expect(build(:organization_with_root).root_org).to be_an RootOrg
+      expect(build(:organization, :with_root).root_org).to be_an RootOrg
     end
   end
 

@@ -3,11 +3,12 @@ class User < ActiveRecord::Base
 
   validates :email, 
     presence: true, 
+    uniqueness: true, 
     format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/ }
   validates :password, presence: true, on: :create
 
   has_many :roles, -> { includes(:org) }
-  has_many :denied_orgs, -> { where("roles.name == ?", "Denied") },
+  has_many :denied_orgs, -> { where(roles: {name: "Denied"}) },
     through: :roles,
     source: :org
   has_many :orgs, -> { where("roles.name != ?", "Denied") },

@@ -5,11 +5,17 @@ RSpec.describe Org do
     it "doesn't allow a blank name" do
       expect(build(:org, name: nil)).to be_invalid
     end
+
+    let(:existing_org) { create(:org) }
+
+    it "doesn't allow a duplicate name" do
+      expect(build(:org, name: existing_org.name)).to be_invalid
+    end
   end
 
   describe "#descendants" do
     it "is nil as a placeholder to be overridden in subclasses" do
-      expect( !build(:org).descendants )
+      expect( build(:org).descendants ).to_not be
     end
   end
 

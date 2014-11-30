@@ -7,11 +7,11 @@ RSpec.describe RootOrg do
   end
 
   it "has many organizations" do 
-    association = RootOrg.reflect_on_association(:organizations)
+    association = described_class.reflect_on_association(:organizations)
     expect(association.macro).to eq :has_many
   end
 
-  let(:org) { build(:root_org_with_orgs) }
+  let(:org) { build(:root_org, :with_descendants) }
 
   describe "#organizations" do
     it "is an array of Organizations" do

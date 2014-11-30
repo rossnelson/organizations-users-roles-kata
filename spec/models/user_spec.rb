@@ -15,6 +15,12 @@ RSpec.describe User do
       it "must be properly formated" do
         expect( build(:user, email: "ross_nelson") ).to be_invalid
       end
+
+      let(:existing_user) { create(:user) }
+
+      it "must be a unique value" do
+        expect( build(:user, email: existing_user.email) ).to be_invalid
+      end
     end
 
     let(:user) { create(:user) }
@@ -43,7 +49,7 @@ RSpec.describe User do
 
   describe "#roles" do
     it "has many roles" do
-      association = User.reflect_on_association(:roles)
+      association = described_class.reflect_on_association(:roles)
       expect(association.macro).to eq :has_many
     end
   end
@@ -52,7 +58,7 @@ RSpec.describe User do
 
   describe "#orgs" do
     it "has many orgs" do
-      association = User.reflect_on_association(:orgs)
+      association = described_class.reflect_on_association(:orgs)
       expect(association.macro).to eq :has_many
     end
 
@@ -68,7 +74,7 @@ RSpec.describe User do
 
   describe "#denied_orgs" do
     it "has many denied_orgs" do
-      association = User.reflect_on_association(:denied_orgs)
+      association = described_class.reflect_on_association(:denied_orgs)
       expect(association.macro).to eq :has_many
     end
 
@@ -91,7 +97,7 @@ RSpec.describe User do
     end
 
     it "does not contain any denied descendants" do
-      denied_ids = user.roles.where('name == ?', 'Denied').map(&:org_id)
+      denied_ids = user.roles.where(name: 'Denied').map(&:org_id)
       expect(denied_ids & user.accessible_orgs.map(&:id)).to eq []
     end
   end

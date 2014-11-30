@@ -13,7 +13,7 @@ RSpec.describe ChildOrg do
 
   describe "#descendants" do
     it "has no descendants and returns nil" do
-      expect( !child_org.descendants )
+      expect( child_org.descendants ).to_not be
     end
   end
 
