@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
-    email Faker::Internet.email
-    password Faker::Internet.password(10)
+    email { Faker::Internet.email }
+    password { Faker::Internet.password(10) }
 
     transient do
       role_count 3
